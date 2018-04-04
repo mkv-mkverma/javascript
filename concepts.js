@@ -26,8 +26,13 @@ function sumOnlyNumbers(...args) {
   }
 }
 sumOnlyNumbers(1, 'Hello', 5, false); // => 6  
+
 /////////////// destructure an array //////////////////
 
+/**
+ * You can extract parts of array using destructuring assignments.
+ * In combination with iteration protocols, spread operator can be used in a more configurable manner.
+ */
 let otherSeasons, autumn;  
 [autumn,...otherSeasons] = ['autumn', 'winter','summer'];
 
