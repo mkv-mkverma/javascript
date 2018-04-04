@@ -1,2 +1,2 @@
 # javascript
-javascript interview question
+javascript interview questions
