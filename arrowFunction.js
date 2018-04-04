@@ -71,3 +71,102 @@ console.log(filterItems()); // [ 'Helium', 'Lithium', 'Beryllium' ]
  */
 
 //////////////////// Function body /////////////////////
+
+/** Syntax */
+
+var func = x => x * x;                  
+// concise body syntax, implied "return"
+
+var func = (x, y) => { return x + y; }; 
+// with block body, explicit "return" needed
+
+///////////////////// Use of the new operator //////////////////////////
+
+// Arrow functions cannot be used as constructors and will throw an error when used with new.
+
+var Foo = () => {};
+var foo = new Foo(); // TypeError: Foo is not a constructor
+
+//////////////////////// Use of prototype property /////////////////////////////
+
+// Arrow functions do not have a prototype property.
+
+var Foo = () => {};
+console.log(Foo.prototype); // undefined
+
+//////////////////// Line breaks ////////////////////
+
+// An arrow function cannot contain a line break between its parameters and its arrow.
+
+var func = ()
+           => 1; 
+// SyntaxError: expected expression, got '=>'
+
+/////////////////// Returning object literals ///////////////////////////
+
+// var func = () => { foo: 1 };               
+// Calling func() returns undefined!
+
+// var func = () => { foo: function() {} };   
+// SyntaxError: function statement requires a name
+
+var func = () => ({foo: 1});
+
+////////////////// Parsing order ////////////////////
+
+// Although the arrow in an arrow function is not an operator, 
+// arrow functions have special parsing rules that interact differently with operator precedence compared to regular functions.
+
+let callback;
+
+callback = callback || function() {}; // ok
+
+// callback = callback || () => {};      
+// SyntaxError: invalid arrow-function arguments
+
+callback = callback || (() => {});    // ok
+
+/////////////////////// More Examples ///////////////////////////////
+
+// An empty arrow function returns undefined
+let empty = () => {};
+
+(() => 'foobar')(); 
+// Returns "foobar"
+// (this is an Immediately Invoked Function Expression 
+// see 'IIFE' in glossary)
+
+var simple = a => a > 15 ? 15 : a; 
+simple(16); // 15
+simple(10); // 10
+
+let max = (a, b) => a > b ? a : b;
+
+// Easy array filtering, mapping, ...
+
+var arr = [5, 6, 13, 0, 1, 18, 23];
+
+var sum = arr.reduce((a, b) => a + b);  
+// 66
+
+var even = arr.filter(v => v % 2 == 0); 
+// [6, 0, 18]
+
+var double = arr.map(v => v * 2);       
+// [10, 12, 26, 0, 2, 36, 46]
+
+// More concise promise chains
+promise.then(a => {
+  // ...
+}).then(b => {
+  // ...
+});
+
+// Parameterless arrow functions that are visually easier to parse
+setTimeout( () => {
+  console.log('I happen sooner');
+  setTimeout( () => {
+    // deeper code
+    console.log('I happen later');
+  }, 1);
+}, 1);
