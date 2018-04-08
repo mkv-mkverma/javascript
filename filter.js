@@ -76,3 +76,11 @@ var invalidCount = 0;
   
 var arrResult = arr.filter(filterById);
 console.log(arrResult)  // [ { id: 15 }, { id: -1 }, { id: 3 }, { id: 12.2 } ]
+
+/////////////////// filter even number ////////////////////////////////
+
+var arrList = [1,2,3,4,5,6,7,8,9,10];
+
+var arrListNew = arrList.filter(element => element%2 == 0);
+
+console.log(arrListNew);
