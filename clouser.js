@@ -124,7 +124,7 @@ counter1.decrement();
 console.log(counter1.value()); /* Alerts 1 */
 console.log(counter2.value()); /* Alerts 0 */
 
-  //////////////////// Closure Scope Chain ////////////////////////////////
+//////////////////// Closure Scope Chain ////////////////////////////////
 
 // For every closure we have three scopes:-
 
@@ -132,3 +132,154 @@ console.log(counter2.value()); /* Alerts 0 */
 // Outer Functions Scope
 // Global Scope
 
+/**
+ * DELL EMC Question
+ * someFunction('Hi')('Javascript Guy,')('You Are Awesome!');
+ * @Output : Hi Javascript Guys, You Are Awesome!
+ */
+
+function appendString(str1) {
+  return function (str2) {
+    return function (str3) {
+      return (str1 + " " + str2 + " " + str3);
+    }
+  }
+}
+
+
+console.log(appendString('Hi')('Javascript Guy,')('You Are Awesome!'));
+
+//////////////////////////////////////////////////
+
+// global scope
+var e = 10;
+function sum(a) {
+  return function (b) {
+    return function (c) {
+      // outer functions scope
+      return function (d) {
+        // local scope
+        return a + b + c + d + e;
+      }
+    }
+  }
+}
+
+console.log(sum(1)(2)(3)(4)); // log 20
+
+// We can also write without anonymous functions:
+
+// global scope
+var e = 10;
+function sum(a) {
+  return function sum2(b) {
+    return function sum3(c) {
+      // outer functions scope
+      return function sum4(d) {
+        // local scope
+        return a + b + c + d + e;
+      }
+    }
+  }
+}
+
+var s = sum(1);
+var s1 = s(2);
+var s2 = s1(3);
+var s3 = s2(4);
+console.log(s3) //log 20
+
+
+////////////////// Performance considerations ////////////////////////
+
+/**
+ * For instance, when creating a new object/class, methods should normally be associated to the object's prototype rather 
+ * than defined into the object constructor. 
+ * The reason is that whenever the constructor is called, 
+ * the methods would get reassigned (that is, for every object creation).
+ */
+
+function MyObject(name, message) {
+  this.name = name.toString();
+  this.message = message.toString();
+
+  this.getMessage = function () {
+    return this.message;
+  }
+
+  this.getName = function () {
+    return this.name;
+  }
+}
+
+var obj = new MyObject("MyObject", "Hello ");
+console.log(obj.getMessage() + " " + obj.getName()); // Hello  MyObject
+console.log(obj.name); // MyObject
+
+/*Above code does not take advantage of the benefits of closures, 
+
+ie. No private variables are being used in the public functions. 
+So we could instead rewrite it as follows:
+
+*/
+
+function MyObject2(name, message) {
+  this.name = name.toString();
+  this.message = message.toString();
+}
+
+MyObject2.prototype = {
+  getMessage: function () {
+    return this.message;
+  },
+  getName: function () {
+    return this.name;
+  }
+}
+
+var obj2 = new MyObject2("MyObject2", "Hello ");
+console.log(obj2.getMessage() + " " + obj2.getName());
+
+/*
+It is not a good practice to update the prototype itself. 
+So Instead we need to append these functions to the prototype.
+*/
+
+function MyObject3(name, message) {
+  this.name = name.toString();
+  this.message = message.toString();
+}
+
+MyObject3.prototype.getMessage = function () {
+  return this.message;
+}
+
+MyObject3.prototype.getName = function () {
+  return this.name;
+}
+
+var obj3 = new MyObject3("MyObject3", "Hello ");
+console.log(obj3.getMessage() + " " + obj3.getName());
+
+/*
+The same can be re-writted with IIF.
+*/
+
+function MyObject4(name, message) {
+  this.name = name.toString();
+  this.message = message.toString();
+}
+
+(function () {
+  this.getMessage = function (data) {
+    console.log(this);
+    return this.message + data;
+  }
+
+  this.getName = function () {
+    return this.name;
+  }
+}).call(MyObject4.prototype);
+
+var obj4 = new MyObject4("MyObject4", "Hello ");
+console.log(obj4.getMessage() + " " + obj4.getName());
