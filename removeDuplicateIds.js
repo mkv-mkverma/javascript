@@ -15,20 +15,32 @@
  * ]
  */
 
-const family = [
-    { id: 1, name: "JOHN" },
-    { id: 2, name: "AJAY" },
-    { id: 3, name: "MANISH" },
-    { id: 2, name: "RASHMI" }
+const family = [{
+        id: 1,
+        name: "JOHN"
+    },
+    {
+        id: 2,
+        name: "AJAY"
+    },
+    {
+        id: 3,
+        name: "MANISH"
+    },
+    {
+        id: 2,
+        name: "RASHMI"
+    }
 ]
 
 function filterUniqueFamily(arrayOfObj, key) {
-    return arrayOfObj.filter((element,index,array) => {
+    return arrayOfObj.filter((element, index, array) => {
         // console.log(array.map((mapItem)=> mapItem[key])); // [ 1, 2, 3, 2 ]
-        return array.map((mapItem)=> mapItem[key]).indexOf(element[key])=== index;
+        // console.log(array.map((mapItem)=> mapItem[key]).indexOf(element[key])); // 0 1 2 1
+        // index // 0 1 2 3
+        return array.map((mapItem) => mapItem[key]).indexOf(element[key]) === index;
     })
 }
 
 const result = filterUniqueFamily(family, 'id');
 console.log(result);
-
